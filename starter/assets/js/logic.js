@@ -13,24 +13,22 @@ const StartQuizChallenge = document.querySelector('#start-screen');
 // Create element for the question div
 const Question = document.querySelector('#questions');
 
-// Create element for the Question title element
+// Create element for the question title element
 const QuestionTitle = document.querySelector('#question-title');
 
 // Create element for the choice div
-const Choice = document.querySelector('#choice');
+const Choice = document.querySelector('#choices');
 
 // Add an event listener to the start button that triggers when clicked.
 startButton.addEventListener('click', function (e) {
-
     // Update the text of timer display to show the timeValue in seconds.
     timerDisplay.textContent = timeValue + ' seconds';
 
     // Set up a recurring interval function that runs every 1000ms (1 second).
     var countdownInterval = setInterval(timePass, 1000);
 
-    // Define the timePass function. 
+    // Define the timePass function.
     function timePass() {
-
         // Decrease timeValue by one.
         --timeValue;
 
@@ -39,7 +37,6 @@ startButton.addEventListener('click', function (e) {
 
         // Check if timeValue has reached or goes below zero.
         if (timeValue <= 0) {
-
             // If yes, then clear the interval function, thus stopping the countdown.
             clearInterval(countdownInterval);
 
@@ -51,23 +48,3 @@ startButton.addEventListener('click', function (e) {
 
 // Add an event listener to the start button that triggers the StartQuiz function when clicked.
 startButton.addEventListener('click', StartQuiz);
-
-// Define the StartQuiz function.
-function StartQuiz () {
-
-    // Immediately hide the quiz start screen element.
-    StartQuizChallenge.style.display = 'none';
-
-    // Show the questions element.
-    Question.style.display = 'block';
-
-    // Show question 1 in the start screen and Choices
-    QuestionTitle.textContent = 'JavaScript File Has An Extension of:';
-
-    // Create the answer1 button element.
-    const answer1 = document.createElement('button');
-    answer1.textContent  = '.java';
-
-    // Append the answer1 button to the Choice element.
-    Choice.appendChild(answer1);
-}
