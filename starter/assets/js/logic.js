@@ -43,6 +43,7 @@ function startQuiz() {
 
       // Displaying "Time is up!" on the timer
       timerDisplay.textContent = 'Time is up!';
+      finishQuiz();
     }
   }
 
@@ -124,7 +125,7 @@ function checkAnswer(selectedAnswer) {
 
 function finishQuiz() {
   // Finishing the quiz and displaying the final score
-  
+
   // Clearing the countdown interval
   clearInterval(countdownInterval);
   timerDisplay.textContent = remainingSeconds + ' seconds'
