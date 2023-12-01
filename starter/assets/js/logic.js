@@ -12,6 +12,7 @@ const endScreen = document.querySelector('#end-screen');
 const finalScore = document.querySelector('#final-score');
 let questionIndex = 0;
 let countdownInterval;
+let submitButton = document.querySelector('#submit');
 
 // Event listener for the start button
 startButton.addEventListener('click', startQuiz);
@@ -143,3 +144,26 @@ function finishQuiz() {
   console.log('Quiz finished');
   console.log('Score: ' + remainingSeconds);
 }
+
+submitButton.addEventListener('click', function(event) {
+    event.preventDefault();
+  
+    const initialsInput = document.querySelector('#initials');
+    const initials = initialsInput.value.trim();
+    const score = remainingSeconds;
+  
+    // Retrieve the existing quiz results from the local storage, or initialize an empty array
+    const quizResults = JSON.parse(localStorage.getItem('quizResults')) || [];
+  
+    // Create a new quiz result object
+    const quizResult = { initials: initials, score: score };
+  
+    // Append the new quiz result to the array
+    quizResults.push(quizResult);
+  
+    // Store the updated quiz results back in the local storage
+    localStorage.setItem('quizResults', JSON.stringify(quizResults));
+  
+    // Open the highscores page in the same window
+    window.location.href = 'highscores.html';
+  });
