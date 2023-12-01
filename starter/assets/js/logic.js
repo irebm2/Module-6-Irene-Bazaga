@@ -93,16 +93,13 @@ function checkAnswer(selectedAnswer) {
 }
 
 function finishQuiz() {
-    clearInterval(countdownInterval); // Clear the interval to stop the timer
-    
-    questionContainer.style.display = 'none';
-    endScreen.style.display = 'block';
-    
-    timerDisplay.textContent = remainingSeconds; // Display the score on the timer
-    finalScore.textContent = remainingSeconds; // Update the final score element
-    
+    questionContainer.style.display = 'none'; // Hide the question container
+    const score = remainingSeconds;
+    endScreen.style.display = 'block'; // Show the end screen
+    timerDisplay.textContent = score;
+    finalScore.textContent = score;
     console.log('Quiz finished');
-    console.log('Score: ' + remainingSeconds);
+    console.log('Score: ' + score);
   }
   
 function calculateScore(answerText) {
