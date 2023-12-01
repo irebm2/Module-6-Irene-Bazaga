@@ -1,66 +1,67 @@
 // Select the start button element from the document.
 const startButton = document.querySelector('#start');
-// Select the timer display element from the document.
+// Select the secnds display element from the document.
 const timerDisplay = document.querySelector('#time');
 // Initialize the timeValue to 75 seconds.
 let timeValue = 75;
+// Create the element remaining seconds
+let remainingSeconds = timeValue;
 // Select the quiz start screen element from the document.
-const StartQuizChallenge = document.querySelector('#start-screen');
+const startScreen = document.querySelector('#start-screen');
 // Create element for the question div
-const Question = document.querySelector('#questions');
-Question.style.display = 'none'; // Hide the questions initially
+const questionContainer = document.querySelector('#questions');
 // Create element for the question title element
-const QuestionTitle = document.querySelector('#question-title');
+const questionTitle = document.querySelector('#question-title');
 // Create element for the choice div
-const Choice = document.querySelector('#choices');
+const choicesContainer = document.querySelector('#choices');
+// Create element for the end-screen div
+const endScreen = document.querySelector('#end-screen');
 // Create a variable to store the question index
 let questionIndex = 0;
+// Create a variable to store the final score
+const finalScore = document.querySelector('#final-score');
 
 // Add an event listener to the start button that triggers when clicked.
-startButton.addEventListener('click', function (e) {
-  startQuiz();
-});
+startButton.addEventListener('click', startQuiz);
 
 function startQuiz() {
-  // Update the text of timer display to show the timeValue in seconds.
+  // Update the text of the timer display to show the timeValue in seconds.
   timerDisplay.textContent = timeValue + ' seconds';
   // Set up a recurring interval function that runs every 1000ms (1 second).
   const countdownInterval = setInterval(timePass, 1000);
 
-  // Define the timePass function.
   function timePass() {
-    // Decrease timeValue by one.
-    timeValue--;
-    // Update timer display with the new time value in seconds.
-    timerDisplay.textContent = timeValue + ' seconds';
-    // Check if timeValue has reached or goes below zero.
-    if (timeValue <= 0) {
+    remainingSeconds--;
+    // Update the timer display with the new time value in seconds.
+    timerDisplay.textContent = remainingSeconds + ' seconds';
+
+    // Check if remainingSeconds has reached or gone below zero.
+    if (remainingSeconds <= 0) {
       // If yes, then clear the interval function, thus stopping the countdown.
       clearInterval(countdownInterval);
-      // Update timer display to say 'Time is up!'
+      // Update the timer display to say 'Time is up!'
       timerDisplay.textContent = 'Time is up!';
       finishQuiz();
     }
   }
 
   // Hide the start screen element.
-  StartQuizChallenge.style.display = 'none';
+  startScreen.style.display = 'none';
   // Show the questions element.
-  Question.style.display = 'block';
+  questionContainer.style.display = 'block';
   // Display the current question
   displayQuestion(questionIndex);
 }
 
 function displayQuestion(index) {
-  QuestionTitle.textContent = quizData[index].question;
-  const choices = document.getElementById('choices');
-  choices.innerHTML = '';
+  questionTitle.textContent = quizData[index].question;
+  choicesContainer.innerHTML = '';
 
   // Create the answer buttons dynamically
   for (let i = 0; i < quizData[index].answers.length; i++) {
     const answer = document.createElement('button');
     answer.textContent = quizData[index].answers[i];
-    choices.appendChild(answer);
+    choicesContainer.appendChild(answer);
     answer.addEventListener('click', function () {
       checkAnswer(answer);
     });
@@ -77,7 +78,10 @@ function checkAnswer(selectedAnswer) {
     feedbackDiv.textContent = 'Right answer!';
   } else {
     feedbackDiv.textContent = 'Wrong answer!';
-    timeValue -= 10;
+    remainingSeconds -= 10;
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
   }
 
   questionIndex++;
@@ -89,13 +93,19 @@ function checkAnswer(selectedAnswer) {
 }
 
 function finishQuiz() {
-  const score = calculateScore();
-  // Add your own logic here to handle the end of the quiz, such as displaying the score or redirecting the user to another page.
-  console.log('Quiz finished');
-  console.log('Score: ' + score);
-}
-
-function calculateScore() {
+    clearInterval(countdownInterval); // Clear the interval to stop the timer
+    
+    questionContainer.style.display = 'none';
+    endScreen.style.display = 'block';
+    
+    timerDisplay.textContent = remainingSeconds; // Display the score on the timer
+    finalScore.textContent = remainingSeconds; // Update the final score element
+    
+    console.log('Quiz finished');
+    console.log('Score: ' + remainingSeconds);
+  }
+  
+function calculateScore(answerText) {
   const correctAnswersCount = quizData.filter(
     (question) => question.correctAnswer === answerText
   ).length;
